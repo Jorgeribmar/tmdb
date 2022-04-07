@@ -2,42 +2,51 @@ import { Injectable } from '@nestjs/common';
 import { DataSourceConfig } from 'apollo-datasource';
 import { RESTDataSource } from 'apollo-datasource-rest';
 import { ConfigService } from '@nestjs/config';
+import { URL } from 'url';
 
 @Injectable()
 export class MovieService extends RESTDataSource {
-  url: string;
-  api_key: string;
-  base_url: string;
+  #api_key: string;
+  #base_url: string;
+
   constructor(private configService: ConfigService) {
     super();
-    this.base_url = process.env.BASE_URL;
-    this.api_key = process.env.API_KEY;
+    this.#base_url = configService.get('TMDB.baseUrl');
+    this.#api_key = configService.get('TMDB.apiKey');
     this.initialize({} as DataSourceConfig<any>);
   }
 
   async getMovies(query: string): Promise<any> {
-    const url =
-      this.base_url +
-      `/search/movie?api_key=` +
-      this.api_key +
-      '&query=' +
-      query +
-      '&page=1';
+    const url = new URL('/search/movie', this.#base_url);
 
-    const searchMovie = await this.get(url);
+    url.searchParams.append('api_key', this.#api_key);
+    url.searchParams.append('query', query);
+    url.searchParams.append('page', '1');
 
-    if (!searchMovie) {
+    const searchMovie = await this.get(url.toString()); // verify to string
+
+    if (!searchMovie?.results) {
       throw new Error('No data');
     } else {
       return (
-        searchMovie?.results?.map((obj) => ({
-          id: obj.id,
-          original_title: obj.original_title,
-          overview: obj.overview,
-          release_date: obj.release_date,
-          vote_average: obj.vote_average,
-          poster_path: obj.poster_path,
-        })) || []
+        searchMovie.results.map((obj) => {
+          const {
+            id,
+            original_title: originalTitle,
+            overview,
+            release_date: releaseDate,
+            vote_average: voteAverage,
+            poster_path: posterPath,
+          } = obj;
+          return {
+            id,
+            originalTitle,
+            overview,
+            releaseDate,
+            voteAverage,
+            posterPath,
+          };
+        }) || []
       );
     }
   }

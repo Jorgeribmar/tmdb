@@ -1,5 +1,7 @@
 export default () => ({
   port: parseInt(process.env.PORT),
-  api_key: process.env.API_KEY,
-  base_url: process.env.BASE_URL,
+  TMDB: {
+    apiKey: process.env.API_KEY,
+    baseUrl: process.env.BASE_URL || '',
+  },
 });

@@ -1,12 +1,12 @@
 type Movie {
   id: ID!
-  original_title: String
+  originalTitle: String
   overview: String
-  release_date: String
-  vote_average: String
-  poster_path: String
+  releaseDate: String
+  voteAverage: String
+  posterPath: String
 }
 
 type Query {
-  getMovies(query: String!): [Movie]
+  movies(query: String!): [Movie]!
 }

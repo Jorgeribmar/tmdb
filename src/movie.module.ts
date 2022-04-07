@@ -14,7 +14,6 @@ import configuration from 'config/configuration';
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
     }),
-
     MovieModule,
   ],
   controllers: [],
