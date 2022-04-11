@@ -16,12 +16,15 @@ export class MovieService extends RESTDataSource {
     this.initialize({} as DataSourceConfig<any>);
   }
 
-  async getMovies(query: string): Promise<any> {
-    const url = new URL('/search/movie', this.#base_url);
+  async movies(query: string): Promise<any> {
+    const url = new URL('/3/search/movie', this.#base_url);
 
     url.searchParams.append('api_key', this.#api_key);
+    url.searchParams.append('language', 'fr-FR');
     url.searchParams.append('query', query);
     url.searchParams.append('page', '1');
+
+    console.log('Movies URL', url);
 
     const searchMovie = await this.get(url.toString()); // verify to string
 
@@ -51,28 +54,28 @@ export class MovieService extends RESTDataSource {
     }
   }
 
-  async getMovie(id: string): Promise<any> {
+  async movie(id: string): Promise<any> {
     if (!id) {
       throw new Error('No ID provided');
     }
+    const url = new URL(`/3/movie/${id}`, this.#base_url);
+    url.searchParams.append('api_key', this.#api_key);
+    url.searchParams.append('language', 'fr-FR');
 
-    const url = this.base_url + `/movie/` + id + `?api_key=` + this.api_key;
-    console.log(url);
+    console.log('Movie URL', url);
 
-    const searchMovie = await this.get(url);
-
-    console.log(searchMovie);
+    const searchMovie = await this.get(url.toString());
 
     if (!searchMovie) {
       throw new Error('No data');
     } else {
       return {
         id: searchMovie.id,
-        original_title: searchMovie.original_title,
+        originalTitle: searchMovie.original_title,
         overview: searchMovie.overview,
-        release_date: searchMovie.release_date,
-        vote_average: searchMovie.vote_average,
-        poster_path: searchMovie.poster_path,
+        releaseDate: searchMovie.release_date,
+        voteAverage: searchMovie.vote_average,
+        posterPath: searchMovie.poster_path,
       };
     }
   }

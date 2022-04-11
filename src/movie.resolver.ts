@@ -6,14 +6,14 @@ export class MovieResolver {
   constructor(private readonly movieService: MovieService) {}
 
   @Query('movies')
-  async getMovies(@Args('query') query: string) {
-    const movies = await this.movieService.getMovies(query);
+  async movies(@Args('query') query: string) {
+    const movies = await this.movieService.movies(query);
     return movies;
   }
 
-  @Query('getMovie')
-  async getMovie(@Args('id') id: string) {
-    const movie = await this.movieService.getMovie(id);
+  @Query('movie')
+  async movie(@Args('id') id: string) {
+    const movie = await this.movieService.movie(id);
     return movie;
   }
 }

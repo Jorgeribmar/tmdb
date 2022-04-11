@@ -9,5 +9,5 @@ type Movie {
 
 type Query {
   movies(query: String!): [Movie]!
-  getMovie(id: ID!): Movie
+  movie(id: ID!): Movie
 }
