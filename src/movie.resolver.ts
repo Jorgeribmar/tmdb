@@ -10,4 +10,10 @@ export class MovieResolver {
     const movies = await this.movieService.getMovies(query);
     return movies;
   }
+
+  @Query('getMovie')
+  async getMovie(@Args('id') id: string) {
+    const movie = await this.movieService.getMovie(id);
+    return movie;
+  }
 }

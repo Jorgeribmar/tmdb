@@ -50,4 +50,30 @@ export class MovieService extends RESTDataSource {
       );
     }
   }
+
+  async getMovie(id: string): Promise<any> {
+    if (!id) {
+      throw new Error('No ID provided');
+    }
+
+    const url = this.base_url + `/movie/` + id + `?api_key=` + this.api_key;
+    console.log(url);
+
+    const searchMovie = await this.get(url);
+
+    console.log(searchMovie);
+
+    if (!searchMovie) {
+      throw new Error('No data');
+    } else {
+      return {
+        id: searchMovie.id,
+        original_title: searchMovie.original_title,
+        overview: searchMovie.overview,
+        release_date: searchMovie.release_date,
+        vote_average: searchMovie.vote_average,
+        poster_path: searchMovie.poster_path,
+      };
+    }
+  }
 }
