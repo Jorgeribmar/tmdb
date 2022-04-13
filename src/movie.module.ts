@@ -12,7 +12,7 @@ import configuration from 'config/configuration';
     ConfigModule.forRoot({ load: [configuration] }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
+      typePaths: ['**/*.graphql'],
     }),
     MovieModule,
   ],
