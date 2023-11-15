@@ -7,6 +7,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
+
 export class Movie {
     id: string;
     originalTitle?: Nullable<string>;

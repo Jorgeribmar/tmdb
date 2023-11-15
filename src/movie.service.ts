@@ -24,7 +24,6 @@ export class MovieService extends RESTDataSource {
     url.searchParams.append('query', query);
     url.searchParams.append('page', '1');
 
-    console.log('Movies URL', url);
 
     const searchMovie = await this.get(url.toString()); // verify to string
 
@@ -61,8 +60,6 @@ export class MovieService extends RESTDataSource {
     const url = new URL(`/3/movie/${id}`, this.#base_url);
     url.searchParams.append('api_key', this.#api_key);
     url.searchParams.append('language', 'fr-FR');
-
-    console.log('Movie URL', url);
 
     const searchMovie = await this.get(url.toString());
 
